@@ -5,29 +5,67 @@ import User from './../db/models/users'
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    User.find({}, (err, users) => {
-        
-    res.json(users)
-    })
+router.post("/", (req, res) => {
+    var token = req.body.data;
+ 
+    var decoded = jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
+        if(err) {
+            res.status(201).json("bad token")
+        } else {
+            User.findOne({username: data.username}, (err2, user) => {
+                res.status(200).json(true)
+            })
+        }
+    });
+console.log(decoded);
+ 
+    
 })
 
 router.post("/signup", (req, res) => {
+    const {username, password} = req.body; 
     const saltRounds = 10;
-    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-        var token = jwt.sign({
-            username: req.body.username
-          }, process.env.JWT_SECRET);
-        res.json({
-            token: token,
-            username: req.body.username
+    User.findOne({username}, (err, user) => {
+        bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+            var token = jwt.sign({
+                username
+              }, process.env.JWT_SECRET);
+        let newUser = new User({username, password: hash});
+        newUser.save(() => {    
+                
+                res.json(token)
+              });
         })
-      });
+
+    })    
 })
 
 router.post("/login", (req, res) => {
-    console.log(req.body)
-    res.json(req.body)
+    const {username, password} = req.body; 
+    User.findOne({username: username}, (err, user) => {
+        console.log(user);
+        bcrypt.compare(password, user.password, function(err, isSuccess) {
+            // res == true
+            console.log(isSuccess)
+            if(isSuccess) {
+                var token = jwt.sign({
+                    username
+                  }, process.env.JWT_SECRET);
+                 // test a matching password
+        res.status(200).json(token)
+        
+            } else {
+                res.status(200).json('Something broke!');
+            }
+            
+    })
+    
 })
+})
+
+router.get("/secret", (req, res)  => {
+    res.json('SECRET PAGE !!')
+})
+
 
 export default router
