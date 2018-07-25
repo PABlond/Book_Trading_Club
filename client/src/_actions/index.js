@@ -1,9 +1,10 @@
-import { signupForm, loginForm } from './../_services'
+import authRequest from './../_services'
+import {constants} from "./../_services/constants"
 import axios from 'axios';
 
 export const login = (username, password) => dispatch => {
 
-    loginForm(username, password)
+    authRequest.config(constants.login, username, password)
     .then(response => {
 
         if (response.status === 200 || response.data) {
@@ -23,7 +24,7 @@ export const login = (username, password) => dispatch => {
 
 export const register = (username, password) => dispatch => {
 
-    signupForm(username, password)
+    authRequest.config(constants.signup, username, password)
     .then(response => {
 
         if (response.status === 200 || response.data) {
