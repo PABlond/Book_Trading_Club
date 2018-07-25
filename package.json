@@ -1,0 +1,23 @@
+{
+  "name": "jwt_boilerplate",
+  "version": "1.0.0",
+  "description": "boilerplate for jwt auth with the mern stack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"cd client && npm start\" \"cd server && npm run test\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PABlond/MERN_Stack_Auth_JWT.git"
+  },
+  "author": "PABlond",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PABlond/MERN_Stack_Auth_JWT/issues"
+  },
+  "homepage": "https://github.com/PABlond/MERN_Stack_Auth_JWT#readme",
+  "dependencies": {
+    "concurrently": "^3.6.1"
+  }
+}
