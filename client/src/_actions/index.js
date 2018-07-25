@@ -11,7 +11,7 @@ export const login = (username, password) => dispatch => {
         .then(response => {
             console.log(response)
             if(response.status === 200) {
-                var data = localStorage.setItem('JWT-token', response.data.token);
+                var data = localStorage.setItem('JWT-token', response.data);
                 dispatch({
                     type: "LOGIN_REQUEST",
                     payload: response.data
@@ -42,6 +42,7 @@ export const register = (username, password) => dispatch => {
 
 export const isLogged = () => dispatch => {
     var data = localStorage.getItem('JWT-token');
+    console.log(data)
     if(data){
         axios.post("http://localhost:8080/api/", {data})
         .then(response => {
