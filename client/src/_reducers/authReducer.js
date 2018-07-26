@@ -4,6 +4,10 @@ export default (state = {}, action) => {
       return {
        token: action.payload
       }
+      case 'LOGIN_REQUEST_FAILED':
+      return {
+        error: action.payload
+       }
       case 'SIGNUP_REQUEST':
         return {
           token: action.payload

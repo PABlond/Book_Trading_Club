@@ -1,72 +1,8 @@
-import authRequest from './../_services'
-import {constants} from "./../_services/constants"
-import axios from 'axios';
+import authActions from "./authActions"
+import booksActions from "./booksActions"
 
-export const login = (username, password) => dispatch => {
-
-    authRequest.config(constants.login, username, password)
-    .then(response => {
-
-        if (response.status === 200 || response.data) {
-            localStorage.setItem('JWT-token', response.data);
-            dispatch({
-                type: "LOGIN_REQUEST",
-                payload: response.data
-            })
-        } else if (response.status == 401 || !response.data) {
-            dispatch({
-                type: "LOGIN_REQUEST",
-                payload: response.data
-            })
-        }
-    })    
+const Actions = {
+    authActions,
+    booksActions
 }
-
-export const register = (username, password) => dispatch => {
-
-    authRequest.config(constants.signup, username, password)
-    .then(response => {
-
-        if (response.status === 200 || response.data) {
-            localStorage.setItem('JWT-token', response.data);
-            dispatch({
-                type: "SIGNUP_REQUEST",
-                payload: response.data
-            })
-        } else if (response.status == 401 || !response.data) {
-            dispatch({
-                type: "SIGNUP_REQUEST",
-                payload: response.data
-            })
-        }
-    });
-}
-
-export const isLogged = () => dispatch => {
-    const data = localStorage.getItem('JWT-token') || false;
-    if (data) {
-        axios.post("http://localhost:8080/api/", { data })
-            .then(response => {
-                console.log(response)
-                if (response.status == 200 || response.data) {
-                    dispatch({
-                        type: "ISLOGGED",
-                        payload: data
-                    })
-                } else {
-                    dispatch({
-                        type: "ISLOGGED",
-                        payload: null
-                    })
-                }
-            })
-    }
-}
-
-
-export const logout = () => dispatch => {
-    localStorage.removeItem('JWT-token');
-    dispatch({
-        type: "LOGOUT"
-    })
-}
+export default Actions

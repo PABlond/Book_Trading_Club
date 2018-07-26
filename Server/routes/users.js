@@ -42,21 +42,32 @@ router.post("/signup", (req, res) => {
 
 router.post("/login", (req, res) => {
     const { username, password } = req.body;
-    User.findOne({ username: username }, (err, user) => {
-        bcrypt.compare(password, user.password, function (err2, isSuccess) {
-            if (isSuccess) {
-                var token = jwt.sign({
-                    username
-                }, process.env.JWT_SECRET);
-                res.status(200).json(token)
-
+    if(username && password) {
+        User.findOne({ username: username }, (err, user) => {
+            if(err) res.json(401).json(false);
+            console.log(user)
+            if(user) {
+                bcrypt.compare(password, user.password, function (err2, isSuccess) {
+                    if (isSuccess) {
+                        var token = jwt.sign({
+                            username
+                        }, process.env.JWT_SECRET);
+                        res.status(200).json(token)
+    
+                    } else {
+                        res.status(201).json(false);
+                    }
+    
+                })
             } else {
-                res.status(401).json(false);
+                res.status(200).json(false);
             }
+            
 
         })
-
-    })
+    } else {
+        res.status(200).json({data: "Username/Password is empty ..."})
+    }
 })
 
 router.get("/secret", (req, res) => {

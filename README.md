@@ -1,4 +1,4 @@
-# Boilerplate of Json Web Token auth with MERN environment
+# Book trading club (for eduction purposes)
 
 ## Usage 
 

@@ -24,9 +24,14 @@ class Header extends Component {
 null
 }
 { this.props.authReducer.token ? 
+<span>
+<li>
+  <a href="/user">Account</a>
+</li>
 <li>
   <button onClick={this.props.actions.logout}>Logout</button>
 </li>
+</span>
 :
 ""
 }

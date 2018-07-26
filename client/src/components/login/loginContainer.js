@@ -1,19 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Actions from '../_actions/'
+import Actions from "./../../_actions/"
 
 
-class Signup extends React.Component {
+class LoginContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      error: ""
     };
 
     this.userNameHandleChange = this.userNameHandleChange.bind(this);
     this.passwordHandleChange = this.passwordHandleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillMount() {
+    if(this.props.authReducer.error) {
+        this.setState({
+            error: this.props.authReducer.error
+        })
+    }
   }
 
   userNameHandleChange(event) {
@@ -28,13 +37,23 @@ class Signup extends React.Component {
     event.preventDefault();
     const { username, password } = this.state;
     if (username && password) {
-     (this.props.simpleAction(username, password));
+     this.props.simpleAction(username, password);
+     
+         
+            } else if( !username ) {
+    this.setState({error: "Username is empty"})
+  } else if( !password ) {
+    this.setState({error: "Password is empty"})
   }
-  }
+}
+ 
 
   render() {
     console.log(this.props)
+    let { error } = this.state;
     return (
+        <div>
+            <h1>Login</h1>
       <form onSubmit={this.handleSubmit}>
         <label>
           Name:
@@ -45,7 +64,9 @@ class Signup extends React.Component {
           <input type="text" value={this.state.password} onChange={this.passwordHandleChange} />
         </label>
         <input type="submit" value="Submit" />
+        {error ? <p>{error}</p> : null}
       </form>
+      </div>
     );
   }
 }
@@ -55,7 +76,7 @@ const mapStateToProps = state => ({
  })
 
  const mapDispatchToProps = dispatch => ({
-  simpleAction: (username, password) => dispatch(Actions.authActions.register(username, password))
+  simpleAction: (username, password) => dispatch(Actions.authActions.login(username, password))
  })
 
- export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+ export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);

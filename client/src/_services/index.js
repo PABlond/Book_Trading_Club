@@ -7,7 +7,7 @@ export default  {
             username: username,
             password: password
         };
-        return axios.post("http://localhost:8080/api/signup", requestOptions)
+        return axios.post("http://localhost:8080/api/users/signup", requestOptions)
         .then(response => {
             return response     
         })
@@ -17,8 +17,9 @@ export default  {
             username: username,
             password: password
         };
-        return axios.post("http://localhost:8080/api/login", requestOptions)
+        return axios.post("http://localhost:8080/api/users/login", requestOptions)
             .then(response => {
+                console.log(response.status)
                 return response
             })
     },

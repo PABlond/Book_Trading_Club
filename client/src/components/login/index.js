@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { login } from './../_actions'
+import Actions from '../../_actions/'
+import LoginContainer from "./loginContainer"
+import { Redirect } from 'react-router'
 
 
 class Login extends React.Component {
@@ -34,22 +36,8 @@ class Login extends React.Component {
 
   render() {
     console.log(this.props)
-    return (
-        <div>
-            <h1>Login</h1>
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input type="text" value={this.state.username} onChange={this.userNameHandleChange} />
-        </label>
-        <label>
-          Name:
-          <input type="text" value={this.state.password} onChange={this.passwordHandleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-      </div>
-    );
+    
+    return !this.props.authReducer.token ? <LoginContainer /> : <Redirect to="/user" />;
   }
 }
 
@@ -58,7 +46,7 @@ const mapStateToProps = state => ({
  })
 
  const mapDispatchToProps = dispatch => ({
-  simpleAction: (username, password) => dispatch(login(username, password))
+  simpleAction: (username, password) => dispatch(Actions.authActionslogin(username, password))
  })
 
  export default connect(mapStateToProps, mapDispatchToProps)(Login);
