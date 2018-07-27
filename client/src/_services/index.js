@@ -19,7 +19,6 @@ export default  {
         };
         return axios.post("http://localhost:8080/api/users/login", requestOptions)
             .then(response => {
-                console.log(response.status)
                 return response
             })
     },

@@ -35,16 +35,28 @@ class LoginContainer extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { username, password } = this.state;
-    if (username && password) {
-     this.props.simpleAction(username, password);
-     
-         
-            } else if( !username ) {
-    this.setState({error: "Username is empty"})
-  } else if( !password ) {
-    this.setState({error: "Password is empty"})
-  }
+    
+    let { username, password } = this.state;
+    const regExp = /[a-z0-9]/gi;
+    console.log(typeof username)
+    const usernameValid = username && password ? 
+                          username.split("").length === username.match(regExp).length
+                          :
+                          false;
+    console.log("usernameValid is" + usernameValid);
+    if( !username ) {
+      if(!password) {
+        this.setState({error: "Username AND password are empty"})
+      } else {
+        this.setState({error: "Username is empty"})
+      }      
+    } else if( !password ) {
+      this.setState({error: "Password is empty"})
+    } else if(!usernameValid) {
+      this.setState({error: "Username has not a valid format"})
+    } else if (username && password) {
+      this.props.authReq(username, password);
+     } 
 }
  
 
@@ -55,15 +67,17 @@ class LoginContainer extends React.Component {
         <div>
             <h1>Login</h1>
       <form onSubmit={this.handleSubmit}>
+      <div>
         <label>
           Name:
           <input type="text" value={this.state.username} onChange={this.userNameHandleChange} />
         </label>
+        </div><div>
         <label>
-          Name:
+          Password:
           <input type="text" value={this.state.password} onChange={this.passwordHandleChange} />
-        </label>
-        <input type="submit" value="Submit" />
+        </label></div><div>
+        <input type="submit" value="Submit" /></div>
         {error ? <p>{error}</p> : null}
       </form>
       </div>
@@ -76,7 +90,7 @@ const mapStateToProps = state => ({
  })
 
  const mapDispatchToProps = dispatch => ({
-  simpleAction: (username, password) => dispatch(Actions.authActions.login(username, password))
+  authReq: (username, password) => dispatch(Actions.authActions.login(username, password))
  })
 
  export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);

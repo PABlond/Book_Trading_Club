@@ -8,22 +8,23 @@ const login = (username, password) => dispatch => {
     .then(response => {
 
         if (response.status === 200 && response.data) {
+           
             localStorage.setItem('JWT-token', response.data);
             dispatch({
                 type: "LOGIN_REQUEST",
                 payload: response.data
             })
         } else if (response.status == 201) {
-            console.log("201")
+
             dispatch({
                 type: "LOGIN_REQUEST_FAILED",
-                payload: "Password Failed"
+                payload: "Wrong password"
             })
         } else if (response.status == 200) {
-            console.log("200")
+                    
             dispatch({
                 type: "LOGIN_REQUEST_FAILED",
-                payload: "Username Failed"
+                payload: "User not found"
             })
         }
     })    

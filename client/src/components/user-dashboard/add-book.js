@@ -32,6 +32,7 @@ class AddBook extends Component {
         
         const {name, author, description} = this.state;
         this.props.sendBook(name, author, description);
+        this.setState({redirect: true})
         
         }
       

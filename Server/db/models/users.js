@@ -10,7 +10,12 @@ const usersSchema = new mongoose.Schema({
             name: String,
             author: String,
             name: String,
-            description: String
+            description: String,
+            want: [{
+                person: String,
+                status: Boolean,
+                exchangeWith: String                
+            }]
         }
     ]
 });

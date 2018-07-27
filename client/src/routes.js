@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import {Redirect} from "react-router"
 import Home from "./components/home"
-import Signup from "./components/signup"
+import Signup from "./components/signup/"
+import Trade from './components/trade'
 import Login from "./components/login/"
 import Header from './header'
 import UserDashboard from "./components/user-dashboard/"
@@ -34,7 +36,8 @@ class Routes extends React.Component {
           <Route exact path="/" component={() => <Home {...opts} />} />
           <Route path="/signup" component={() => <Signup/>} />
           <Route path="/login" component={() => <Login/>} />
-          <Route path="/user" component={() => <UserDashboard {...opts} />} />
+          <Route exact path="/user" component={() => <UserDashboard {...opts} />} />
+          <Route path="/user/trade/:id" component={() => <Trade {...opts} />} />
         </div>
       </Router>
     );

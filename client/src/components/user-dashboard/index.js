@@ -7,9 +7,7 @@ import HomeDash from "./homeDash"
 class UserDashboard extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            page: () => <HomeDash />
-        };
+        
     }
     render() {
         console.log(this.props)
@@ -19,7 +17,7 @@ class UserDashboard extends Component {
             <div>
                 
                 <h1>User Dashboard</h1>
-                {this.state.page()}
+                <HomeDash />    
                 </div>
         ) :
         (

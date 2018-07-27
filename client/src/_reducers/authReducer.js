@@ -14,6 +14,7 @@ export default (state = {}, action) => {
         }
         case 'ISLOGGED':
         return {
+          ...state,
           token: action.payload
         }
         case 'LOGOUT':

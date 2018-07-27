@@ -1,30 +1,79 @@
 import React, { Component } from 'react';
+import Popup from "reactjs-popup";
+import {Redirect} from 'react-router'
 import { connect } from 'react-redux';
-import { logout, isLogged } from './../_actions'
 import { bindActionCreators } from 'redux';
+import Actions from "./../_actions/"
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.logout = this.logout.bind(this)
+        this.state = { 
+            trade: "",
+            tradeRedirect: false,
+            messageToShow: undefined
+        };
     }
-    
-    logout() {
-        this.props.actions.logout();
+
+
+    componentWillMount() {
+        !this.props.booksReducer.books ? this.props.sendBook() : null
+        this.props.booksReducer.messageToShow ? this.setState({messageToShow: this.props.booksReducer.messageToShow})
+        :
+        null
     }
 
-render() {
+    render() {
+        const{messageToShow} = this.state;
+        return this.state.tradeRedirect ? <Redirect to={"/user/trade/" + this.state.trade } /> : (
+            
+            <div>
+                <h1>Home</h1>
+                
+                <div>
+                    {this.props.booksReducer.books ?
+                        this.props.booksReducer.books.map(user => {
+                            return (
+                                <div>
 
+                                    <h3> {user.book.name} </h3>
+                                    <p><em>{user.book.author}</em></p>
+                                    <p>{user.book.description}</p>
+                                    <p>Post by: {user.username}</p>
+                                    <Popup trigger={<button>I want it</button>} position="right center">
+                                        <div>
+                                            <h3>This book is own by {user.username}</h3>
+                                            <p>
+                                                Choose a book to trade with ...
+                                                </p>
+                                            <div>
+                                            <button onClick={() => this.setState({tradeRedirect: true, trade: user.book._id})}>Choose a book</button>
+                                                
 
-    console.log(this.props)
-    return(
-        <div>
-            <h1>Home</h1>   
-            <p>{this.props.authReducer.token ? "Your token: " + this.props.authReducer.token : "Your are not logged"}</p>
-            <button onClick={this.logout}>LOGOUT</button>
-        </div>
-    )
+                                                <button>Cancel</button>
+                                            </div>
+                                        </div>
+                                    </Popup>
+                                </div>
+                            )
+                        })
+                        :
+                        null}
+                </div>
+
+            </div>
+        )
+    }
 }
-}
+const mapStateToProps = (state, ownProps) => {
+    return { ...state };
+};
 
-   export default (Home);
+const mapDispatchToProps = dispatch => bindActionCreators({
+        sendBook: () => (Actions.booksActions.fetchBook()),
+        booksToTrade: () => Actions.booksActions.booksToTrade()
+},
+dispatch,
+)
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
